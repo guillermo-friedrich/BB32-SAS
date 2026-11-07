@@ -1,0 +1,6 @@
+../Core/Src/flash.c:283:45:flash_pgm	24	static,ignoring_inline_asm
+../Core/Src/flash.c:51:6:udp_flash_server_callback	112	static,ignoring_inline_asm
+../Core/Src/flash.c:421:5:getConfigFromFlash	24	static
+../Core/Src/flash.c:464:6:startWatchdog	16	static
+../Core/Src/flash.c:477:5:saveConfigFlash	64	static,ignoring_inline_asm
+../Core/Src/flash.c:577:5:deleteConfigFlash	40	static

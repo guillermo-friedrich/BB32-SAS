@@ -1,0 +1,3 @@
+../Core/Src/udp_echo.c:21:13:udp_echo_recv	24	static
+../Core/Src/udp_echo.c:42:6:UDP_Echo_Init	16	static
+../Core/Src/udp_echo.c:67:6:UDP_Echo_Process	4	static

@@ -1,0 +1,7 @@
+../Core/Src/uart.c:27:6:initUART0	4	static
+../Core/Src/uart.c:32:6:UART0_start_rx	16	static
+../Core/Src/uart.c:40:6:UART0_tx	24	static
+../Core/Src/uart.c:58:6:UART0_tx_addr	24	static
+../Core/Src/uart.c:65:6:UART0_tx_data	24	static
+../Core/Src/uart.c:72:5:UART0_rx	16	static
+../Core/Src/uart.c:95:6:HAL_UARTEx_RxEventCallback	24	static

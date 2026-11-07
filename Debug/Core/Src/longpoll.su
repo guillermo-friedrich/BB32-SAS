@@ -1,0 +1,12 @@
+../Core/Src/longpoll.c:282:6:sendMeters	24	static
+../Core/Src/longpoll.c:316:6:clearLongPollBuffer	16	static
+../Core/Src/longpoll.c:345:13:clearLongPoll	40	static
+../Core/Src/longpoll.c:409:12:checkBCD	24	static
+../Core/Src/longpoll.c:433:16:legacyPolling	40	static
+../Core/Src/longpoll.c:596:16:setVGMDateTime	16	static
+../Core/Src/longpoll.c:631:10:polling	40	static
+../Core/Src/longpoll.c:854:6:OnDemandLongPoll	48	static
+../Core/Src/longpoll.c:1034:6:long2str	32	static
+../Core/Src/longpoll.c:1055:6:long2bcd	56	static
+../Core/Src/longpoll.c:1072:10:bcd2long	24	static
+../Core/Src/longpoll.c:1089:5:getCurrentCredits	24	static

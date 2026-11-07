@@ -1,0 +1,3 @@
+../Core/Src/hello.c:26:6:Hello_process	7
+../Core/Src/hello.c:68:6:processHelloReply	24
+../Core/Src/hello.c:211:6:sendHello	4

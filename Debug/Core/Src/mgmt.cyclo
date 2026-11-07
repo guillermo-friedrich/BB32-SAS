@@ -1,0 +1,6 @@
+../Core/Src/mgmt.c:61:6:udp_mgmt_server_callback	24
+../Core/Src/mgmt.c:242:6:setUID	2
+../Core/Src/mgmt.c:256:6:setIpMistery	2
+../Core/Src/mgmt.c:271:10:MyIP	2
+../Core/Src/mgmt.c:282:6:display_vcc	1
+../Core/Src/mgmt.c:294:6:display_low_vcc	1

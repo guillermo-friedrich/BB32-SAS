@@ -1,0 +1,3 @@
+../Core/Src/watchdog.c:14:6:IWDG_Init_Register	4	static
+../Core/Src/watchdog.c:32:6:Debug_FreezeWatchdog	4	static
+../Core/Src/watchdog.c:45:14:GetResetCause	16	static

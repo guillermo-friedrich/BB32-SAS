@@ -1,0 +1,3 @@
+../Core/Src/adc.c:38:10:ADC_Read_VREFINT	3
+../Core/Src/adc.c:70:10:ADC_Calculate_VDDA	1
+../Core/Src/adc.c:87:10:Vcc	2

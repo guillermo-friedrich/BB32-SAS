@@ -1,0 +1,5 @@
+../Core/Src/card.c:54:5:getCardStatus	8	static
+../Core/Src/card.c:73:6:checkCardReader	8	static
+../Core/Src/card.c:96:12:cardAnswerToReset	24	static
+../Core/Src/card.c:131:13:cardBreak	8	static
+../Core/Src/card.c:148:5:cardRead	24	static

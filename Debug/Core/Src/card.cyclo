@@ -1,0 +1,5 @@
+../Core/Src/card.c:54:5:getCardStatus	2
+../Core/Src/card.c:73:6:checkCardReader	5
+../Core/Src/card.c:96:12:cardAnswerToReset	5
+../Core/Src/card.c:131:13:cardBreak	1
+../Core/Src/card.c:148:5:cardRead	10
