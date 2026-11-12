@@ -26,6 +26,7 @@
 #define SERV_PORT_LP21_ROM_SIGN      1208
 #define SERV_PORT_MISTERY            1209
 #define SERV_PORT_PROGRESIVO         1210
+#define SERV_PORT_BUFFET             8000
 
 /* Direcciones IP de servidores */
 #define IPV4(n1,n2,n3,n4)   ((uint32_t)(n1 | (n2<<8) | (n3<<16) | (n4<<24)))
@@ -39,6 +40,7 @@
                                                  Por ej.: si la IP propia es 172.17.0.5/16,
                                                  el controlador de progresivo deberá tener
                                                  una dirección IP como 172.17.10.n */
+#define IP_SERV_EXTRA       IPV4(172,17,0,9)
 
 /* Prototipos de funciones */
 struct udp_pcb * udp_server_init(uint16_t udp_port);
@@ -79,6 +81,6 @@ void cifrar (uint8_t message[], uint16_t nBytes);
 extern struct udp_pcb *upcb_cli, *upcb_mgmt, *upcb_test, *upcb_lp21, *upcb_bonus, *upcb_flash;
 
 /* Direcciones IP de los distintos servidores */
-extern ip_addr_t addr_serv_online, addr_serv_cashless, addr_serv_mgmt, addr_serv_prog;
+extern ip_addr_t addr_serv_online, addr_serv_cashless, addr_serv_mgmt, addr_serv_prog, addr_serv_extra;
 
 #endif /* __UDP_SERVER_H */

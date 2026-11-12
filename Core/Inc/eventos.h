@@ -56,6 +56,8 @@
 #define EVT_6A_AFT_REQ_4_HOST_CASHOUT      0x6A
 #define EVT_6B_AFT_REQ_4_HOST_CASHOUT_WIN  0x6B
 #define EVT_6F_GAME_LOCKED                 0x6F
+#define EVT_71_CHANGE_LAMP_ON              0x71
+#define EVT_72_CHANGE_LAMP_OFF             0x72
 #define EVT_74_PRINTER_PAPER_LOW           0x74
 #define EVT_75_PRINTER_POWER_OFF           0x75
 #define EVT_76_PRINTER_POWER_ON            0x76

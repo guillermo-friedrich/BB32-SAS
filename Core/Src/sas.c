@@ -124,6 +124,7 @@ static void SAS_processing(void);
 static void clearEventBuffer(void);
 static int general_poll (void);
 static int poll_cash (void);
+static void mensaje_al_bar( uint8_t evt );
 
 #if 0
 /* ─────────────────────────────────────────────
@@ -237,7 +238,8 @@ void DoNetworkStuff()
   */
 void myMain(void)
 {
-  uint32_t sendMeters_timer = 0, flag=0, n;
+  uint32_t sendMeters_timer = 0;
+  //uint32_t flag=0, n;
 
   Debug_FreezeWatchdog();
   IWDG_Init_Register();
@@ -803,6 +805,13 @@ static int poll_cash (void)
     // Descarga por botón cobrar
     LCD_print ("DESCARGANDO", ((getCardStatus())?_RETIRE_TARJETA:""));
     flag.cashoutButtonPressed = 0;
+  }else if( cash_flag == DO_CASHOUT ){
+    if( montoVendedor )
+      LCD_print( _DESCARGANDO_V, "" );
+    else {
+      LCD_print( _DESCARGANDO_J, "" );
+      flag.faltaDescargandoJ = 0;
+    }
   }
 
   if (flag.handpayRequest)
@@ -1159,6 +1168,21 @@ static int general_poll (void)
         /* Como hay máquinas configuradas dual, para TITO y cashless, siempre se
          responde a este evento, enviando la validación requerida */
         ticket_flag.do_set_validation_id = 1;
+        break;
+      case EVT_71_CHANGE_LAMP_ON:
+        getCurrentCredits(&currentCredits);
+        if( currentCredits )
+        {
+          mensaje_al_bar(evt);
+          flag.llamado_al_bar = 1;
+        }
+        break;
+      case EVT_72_CHANGE_LAMP_OFF:
+        if( flag.llamado_al_bar )
+        {
+          mensaje_al_bar(evt);
+          flag.llamado_al_bar = 0;
+        }
         break;
       }
 
@@ -1707,3 +1731,18 @@ void prepareHandpayMsgBuffer()
   sprintf (cashMsgBuffer.datetime + 12, "%02hu", (uint16_t) tiempo.seg);
 }
 #endif
+
+//----------------------------------
+// Envía mensaje a la barra
+//----------------------------------
+static void mensaje_al_bar( uint8_t evt )
+{
+  if( features.IP_server_extra )
+  {
+    sprintf( (char *)tx_buffer, "%u/%02x", features.uid, evt );
+    sendUDP( tx_buffer, strlen((char *)tx_buffer)+1, upcb_cli, &addr_serv_extra, SERV_PORT_BUFFET);
+    LCD_print( "LLAMADO AL BAR", evt==EVT_71_CHANGE_LAMP_ON?_ESPERE:"CANCELADO" );
+  }
+}
+
+

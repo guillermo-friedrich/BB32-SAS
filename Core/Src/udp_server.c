@@ -23,7 +23,8 @@ struct udp_pcb *upcb_cli, *upcb_mgmt, *upcb_test, *upcb_lp21, *upcb_bonus, *upcb
 ip_addr_t addr_serv_online={IP_SERV_ONLINE},
 		      addr_serv_cashless = {IP_SERV_CASHLESS},
 			  	addr_serv_mgmt = {IP_SERV_MGMT},
-				  addr_serv_prog = {IP_SERV_PROG};
+				  addr_serv_prog = {IP_SERV_PROG},
+				  addr_serv_extra = {IP_SERV_EXTRA};
 
 /* Private function prototypes -----------------------------------------------*/
 static void udp_server_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16_t port);

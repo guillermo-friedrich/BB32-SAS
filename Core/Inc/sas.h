@@ -83,6 +83,7 @@ union FLAGS
                                              máquinas que no informan la denominación con el LP 1F (por ej.: ruletas Dayco) */
     uint32_t onDemandLongPoll     :1;     // En "1" indica que se recibió un requerimiento de long poll a demanda, que debe ser procesado
     uint32_t updatingFirmware     :1;     // En "1" indica que está en proceso de recibir una nueva imagen del firmware
+    uint32_t llamado_al_bar       :1;     /* En "1": hay un llamado al bar pendiente de atención */
   };
 };
 

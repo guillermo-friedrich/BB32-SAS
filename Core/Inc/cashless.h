@@ -9,7 +9,7 @@
 #define INC_CASHLESS_H_
 
 // Versión del firmware
-#define VERSION "BB32.9.71n"
+#define VERSION "BB32.9.75f"
 
 /* Includes ------------------------------------------------------------------*/
 //#include <stdint.h>

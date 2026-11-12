@@ -72,6 +72,19 @@ int getCardStatus()
  */
 void checkCardReader()
 {
+  if( flag.waitingClientCard )
+  {
+    if( (HAL_GetTick()-waitClientCardTimer) > _12seg )
+    {
+      flag.waitingClientCard = 0;
+      if( montoVendedor )
+      {
+        cash_flag = DO_CASHOUT;
+      }
+    }else{
+      LCD_print( _INGRESE_TARJETA, "DE CLIENTE" );
+    }
+  }
   if( getCardStatus() != flag.cardStatus )
 	{
 		flag.cardStatus = !flag.cardStatus;

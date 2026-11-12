@@ -47,6 +47,8 @@ static uint8_t AFT_transactionID = '1';   // Nro de transacción AFT ('1' a '9')
 
 static volatile uint32_t wait69Timer;
 
+uint32_t waitClientCardTimer;// timer para la espera de que se inserte una tarjeta de cliente
+
 #define wait6FTimer wait69Timer
 
 // Prototipos de funciones static
@@ -490,6 +492,9 @@ void cashin()
         // Si montoVendedor != 0 significa que la carga de cliente es posterior
         // a la compra a un vendedor. En ese caso muestra un mensaje para indicar
         // que la venta se ha concretado.
+
+        flag.waitingClientCard = 0;  // Por si viniera después de una carga de vendedor
+
         if( montoVendedor )
         {
           // Muestra en el display el total que lleva cargado.
@@ -540,6 +545,9 @@ void cashin()
       flag.cardStatus = 0;
       cash_flag = 0;
       sendCashinAck();
+
+      flag.waitingClientCard = 1;
+      waitClientCardTimer = HAL_GetTick();
       return;
 #endif
 #if 0
@@ -649,7 +657,14 @@ void cashout()
   fillZeros((uint8_t *)&cashMsgBuffer, sizeof(cashMsgBuffer));  // Inicializa con ceros el buffer de mensaje
 
   // Descarga la máquina (y obtiene el código de error a enviar en el mensaje)
-  if( cashProtocol=='A' || cashProtocol=='a')
+  if( montoVendedor )
+  {
+    cash_monto = montoVendedor;
+    cashMsgBuffer.errorCode = AFT_FULL_TRANSFER_OK;
+    montoVendedor = 0;
+    montoVendedorPesos = 0;
+  }
+  else if( cashProtocol=='A' || cashProtocol=='a')
   {
     // Intenta el cashout
     if( flag.cashoutWin )
@@ -958,7 +973,7 @@ void cashout()
   // Por las dudas resetea el monto acumulado
   // de la carga del último vendedor
   montoVendedor = 0;
-//  montoVendedorPesos = 0;
+  montoVendedorPesos = 0;
 
   // Resetea el flag de requerimiento de cashless
   cash_flag = 0;
@@ -2232,11 +2247,12 @@ uint8_t reset_handpay( uint8_t evt )
       // resetea el flag de requerimiento de reset de pago manual
       flag.handpayRequest = 0;
 
+#if 0 // Anulo esta parte para probar si es posible esperar el evento 54 para mandar el mensaje
       // Si el pago manual provenía del algún progresivo, ordena enviar
       // el mensaje de progressive win para computar ese premio
       if(level>0 && level<=20)
         flag.progressiveWin = 1;
-
+#endif
       sendUDP( ( unsigned char * )&cashMsgBuffer, sizeof( cashMsgBuffer ), upcb_cli, &addr_serv_online, SERV_PORT_PAGO_MANUAL );
 
       // Espera recibir la respuesta del servidor de online
@@ -2275,7 +2291,7 @@ uint8_t reset_handpay( uint8_t evt )
   }
   // por las dudas resetea el monto acumulado del último vendedor
   montoVendedor = 0;
-  //montoVendedorPesos = 0;
+  montoVendedorPesos = 0;
 
   /* Resetea el flag de espera del evento 52, que mantenía bloqueada la posibilidad
      de hacer un cashout (eventualmente en cero) por retiro de tarjeta. Esto es para

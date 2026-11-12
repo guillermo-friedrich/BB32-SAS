@@ -268,6 +268,7 @@ extern uint8_t cashProtocol;
 extern CashMsgType cashMsgBuffer;   // Buffer para los mensajes de cashless a enviar
 extern uint32_t montoVendedor;      /* Totaliza la última carga de un vendedor (en centavos o créditos, según la VGM).
                                        Se usa para cargar o descargar */
+extern uint32_t waitClientCardTimer;// Timer para la espera de que se inserte una tarjeta de cliente
 
 // Prototipos de funciones
 // aft.c ---------------------------------------------------------------------------------
