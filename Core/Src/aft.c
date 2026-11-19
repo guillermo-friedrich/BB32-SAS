@@ -481,7 +481,7 @@ void cashin()
       {
         /* Se retiró la tarjeta mientras se esperaba el cashin reply -->
          * --> no hace la carga y la reporta como errónea */
-        status = AFT_TRANSFER_CANCELLED_BY_HOST;
+        sendCashinAckNak( (status = AFT_TRANSFER_CANCELLED_BY_HOST) );
         LCD_print_maquina_libre();
         cash_flag = 0;
         return;
@@ -521,12 +521,6 @@ void cashin()
     }
     else  // CASHIN_REP_VEND_OK
     {
-#if 0
-      // Por ahora no implementada la carga de vendedor --> la rechaza
-      status = AFT_TRANSFER_CANCELLED_BY_HOST;
-      LCD_print("CARGA VENDEDOR", "NO SOPORTADA");
-      delay(_2seg);
-#else
       // Si es una carga de vendedor no carga la VGM, sino que acumula en
       // montoVendedor y envía un mensaje de ACK (simulando una carga exitosa)
       status = AFT_FULL_TRANSFER_OK;
@@ -549,20 +543,6 @@ void cashin()
       flag.waitingClientCard = 1;
       waitClientCardTimer = HAL_GetTick();
       return;
-#endif
-#if 0
-      // Si es una carga de vendedor no carga la VGM, sino que acumula en
-      // montoVendedor y envía un mensaje de ACK (simulando una carga exitosa)
-      status = AFT_FULL_TRANSFER_OK;
-      sendCashinAck();
-
-      // Si la tarjeta actual es de vendedor, para la próxima espera un tiempo más breve.
-      cardReaderLockTime = _10ms;
-
-      // Acumula el monto de la venta
-      montoVendedor += monto;
-      montoVendedorPesos += cargaUnitVendedor;
-#endif
     }
     sendCashinAckNak (status);
   }
@@ -1096,43 +1076,6 @@ void sendCashinAckNak (uint8_t errorCode)
   }
   while (flag.waitingCashinNakEnd);
 }
-
-#if 0
-/**
- * @brief Transacción AFT para cargar crédito en la VGM
- * @param monto a cargar (en centavos)
- * @return 0 si AFT_FULL_TRANSFER_OK
- *         Transfer Status si no se completó la transferencia
- *         0x0F si VGM no responde
- *         0x2F si error en AFT Lock
- *         0x1F si otra causa de error
- */
-
-static uint8_t AFT_cashin( uint32_t monto )
-{
-  // Falta implementar --> ahora solo a modo de prueba
-  if( monto <= 1000 )
-    return AFT_FULL_TRANSFER_OK;
-  else
-    return AFT_TRANSFER_FAILED;
-}
-
-/**
- * @brief Transacción AFT para descargar todo el crédito de la VGM
- * @param None
- * @return  0 (AFT_FULL_TRANSFER_OK)
- *          o el Transfer Status que indica por que no se completó la transferencia
- *          o 0x0F (la VGM no responde)
- *          o 0x2F (Error en AFT Lock)
- *          o 0x1F (otra causa de error)
- *          La variable cash_monto queda cargada con el monto descargado
- */
-static uint8_t AFT_cashout( uint32_t * pMonto )
-{
-  *pMonto = monto;
-  return AFT_FULL_TRANSFER_OK;
-}
-#endif
 
 //--------------------------------------------
 // Envía un AFT status request, para obtener

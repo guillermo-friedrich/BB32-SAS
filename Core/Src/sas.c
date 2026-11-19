@@ -253,6 +253,9 @@ void myMain(void)
 
   initVars();
 
+  clearEventBuffer();
+  clearLongPollBuffer();
+
   LCD_init();
 
   clearEventBuffer();
@@ -262,41 +265,16 @@ void myMain(void)
   upcb_flash = udp_server_init(LOCAL_PORT_FLASH);
 
   sendHello("INICIANDO","");
-/*
-  while(1)
-  {
-    DoNetworkStuff();
-    if( ++flag%3 == 1 )
-    {
-      UART0_tx("HOLA QUE ",9);
-      HAL_UART_Transmit(&huart5, (uint8_t *)"T", 1, HAL_MAX_DELAY);
-      HAL_UART_Transmit(&huart5, (uint8_t *)"A", 1, HAL_MAX_DELAY);
-      delay(100);
-      HAL_UART_Transmit(&huart5, (uint8_t *)"L", 1, HAL_MAX_DELAY);
-      HAL_UART_Transmit(&huart5, (uint8_t *)" ", 1, HAL_MAX_DELAY);
-      delay(150);
-      HAL_UART_Transmit(&huart5, (uint8_t *)"A", 1, HAL_MAX_DELAY);
-      HAL_UART_Transmit(&huart5, (uint8_t *)"B", 1, HAL_MAX_DELAY);
-    }else if(flag%3 == 2) {
-      UART0_tx("BYE BYE ",9);
-    }else{
-      strcpy(rx_buffer,"XYZ XXYYZZ");
-      UART0_tx((uint8_t *)"123", 4);
-      delay(500);
-    }
 
-    if( n = UART0_rx() )
-    {
-      rx_buffer[rx_buflen]=0;
-      sprintf((char *)tx_buffer+64,"%s %d %u", rx_buffer+15, rx_buflen, n);
-      LCD_print(rx_buffer,tx_buffer+64);
-      rx_buflen=0;
-    }else{
-      sprintf((char *)tx_buffer+64,"%d %u", rx_buflen, n);
-      LCD_print("",tx_buffer+64);
-    }
-  }
-*/
+  // Prepara para mostrar el UID y la dirección IP propia
+  sprintf((char *)tx_buffer, "UID: %hu", features.uid);
+  sprintf((char *)tx_buffer+16, "IP: %lu.%lu.%lu.%lu", MyIP()&0xff, (MyIP()>>8)&0xff, (MyIP()>>16)&0xff, (MyIP()>>24)&0xff);
+  LCD_print((char *)tx_buffer, (char *)tx_buffer+16);
+  delay(_2seg);
+
+  LCD_print("VERSION", VERSION);
+  delay(_2seg);
+
   initSAS();
 
   /* Infinite loop */
@@ -604,7 +582,6 @@ static void initSAS ()
 
     Hello_process();        /* Envío periódico del Hello y procesamiento de las respuestas */
 
-
     // Espera recibir 5 bytes con la dirección de la VGM, para asegurarse de que esté
     // activa. Como algunas máquinas no envían la dirección con el bit de wakeup seteado,
     // se esperan recibir 5 bytes consecutivos con el mismo valor, para distinguir de
@@ -673,6 +650,9 @@ static void initSAS ()
       /* La máquina no informó la denominación --> toma por
          defecto un centavo */
       unidad_denominacion = 1;
+    }else{
+      /* la VGM respondió a LP1F --> setea que la VGM está respondiendo */
+      flag.vgmAlive = 1;
     }
 
     getCurrentCredits (&currentCredits);

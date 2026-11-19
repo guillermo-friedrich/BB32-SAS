@@ -210,68 +210,6 @@ static int nPoll;
  * Funciones
  *-------------------------
  */
-#if 0
-/**
- * @brief FreeRTOS-Task "SEND_METERS"
- *        Envía mensaje de contadores al servidor online
- */
-void SendMeters_task(void *pvParameters)
-{
-	clearLongPollBuffer();
-
-	while(1)
-	{
-    // Solicita acceso exclusivo al buffer de mensaje de Long Poll
-    if( xSemaphoreTake(xMutexLongPoll, portMAX_DELAY) == pdTRUE )
-    {
-      // Solicita acceso exclusivo al uso de Ethernet
-      if( xSemaphoreTake(xMutexEth, portMAX_DELAY) == pdTRUE )
-      {
-        // Prepara y envía el mensaje con los valores actuales de los contadores
-        sendMeters();
-
-        // Libera el uso de Ethernet
-        xSemaphoreGive(xMutexEth);
-      }
-      // Libera el uso del buffer de mensaje de Long Poll
-      xSemaphoreGive(xMutexLongPoll);
-    }
-		//Delay de 30 s hasta el próximo envío de Contadores
-		vTaskDelay( _30seg );
-	}
-}
-
-/**
- * @brief FreeRTOS-Task "SEND_METERS"
- *        Envía mensaje de contadores al controlador del progresivo
- */
-void SendMetersProg_task(void *pvParameters)
-{
-	clearLongPollBuffer();
-
-	while(1)
-	{
-		if ( xSemaphoreTake( xSemaphoreSendMetersProg, portMAX_DELAY ) == pdTRUE )
-		{
-      // Solicita acceso exclusivo al buffer de mensaje de Long Poll
-      if( xSemaphoreTake(xMutexLongPoll, portMAX_DELAY) == pdTRUE )
-      {
-        // Solicita acceso exclusivo al uso de Ethernet
-        if( xSemaphoreTake(xMutexEth, portMAX_DELAY) == pdTRUE )
-        {
-          // Prepara y envía el mensaje con los valores actuales de los contadores
-          sendMeters();
-
-          // Libera el uso de Ethernet
-          xSemaphoreGive(xMutexEth);
-        }
-        // Libera el uso del buffer de mensaje de Long Poll
-        xSemaphoreGive(xMutexLongPoll);
-      }
-		}
-	}
-}
-#endif
 
 /**
  * @brief  Envía un mensaje de contadores al servidor online o al controlador del

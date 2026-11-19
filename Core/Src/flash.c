@@ -75,7 +75,7 @@ void udp_flash_server_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, 
       EraseInitStruct.TypeErase     = FLASH_TYPEERASE_SECTORS;
       EraseInitStruct.VoltageRange  = FLASH_VOLTAGE_RANGE_3; // Tensión entre 2.7V y 3.6V
       EraseInitStruct.Sector        = FLASH_SECTOR_12;       // Sector inicial
-      EraseInitStruct.NbSectors     = 12;                     // Cantidad de sectores a borrar (12 al 23)
+      EraseInitStruct.NbSectors     = 12;                    // Cantidad de sectores a borrar (12 al 23)
 
       /* Ejecuta el borrado de los sectores en una sola llamada */
       if (HAL_FLASHEx_Erase(&EraseInitStruct, &SectorError) != HAL_OK)

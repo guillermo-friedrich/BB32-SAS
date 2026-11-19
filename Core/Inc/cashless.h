@@ -9,14 +9,9 @@
 #define INC_CASHLESS_H_
 
 // Versión del firmware
-#define VERSION "BB32.9.75f"
+#define VERSION "BB32.9.75f2"
 
 /* Includes ------------------------------------------------------------------*/
-//#include <stdint.h>
-//#include "pbuf.h"
-//#include "mgmt.h"
-//#include "eventos.h"
-
 #include "main.h"
 #include "lwip.h"
 #include "lwip/netif.h"
